@@ -4,6 +4,16 @@
 $ npm install
 ```
 
+## Migrations
+
+```bash
+# dev
+$ npx prisma migrate dev
+
+# deploy
+$ npx prisma migrate deploy
+```
+
 ## Running the app
 
 ```bash

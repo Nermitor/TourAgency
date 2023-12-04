@@ -1,0 +1,124 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Country {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+  City City[]
+}
+
+model City {
+  id        Int    @id @default(autoincrement())
+  name      String @unique
+  countryId Int
+
+  country    Country      @relation(fields: [countryId], references: [id])
+  TourCities TourCities[]
+}
+
+model TourType {
+  id          Int     @id @default(autoincrement())
+  name        String  @unique
+  description String?
+  Tour        Tour[]
+}
+
+model FoodType {
+  id           Int             @id @default(autoincrement())
+  name         String          @unique
+  description  String?
+  Sale         Sale[]
+  TourFoodType TourFoodTypes[]
+}
+
+model Discount {
+  id    Int     @id @default(autoincrement())
+  name  String
+  value String
+  code  String? @unique
+  Sale  Sale[]
+}
+
+model Role {
+  id   Int    @id @default(autoincrement())
+  name String
+  User User[]
+}
+
+model User {
+  id             Int      @id @default(autoincrement())
+  fullName       String
+  hashedPassport String
+  phoneNumber   String
+  email          String
+  passport       String
+  roleID         Int
+  role           Role     @relation(fields: [roleID], references: [id])
+  Tour           Tour[]
+  Refund         Refund[]
+}
+
+model Tour {
+  id            Int             @id @default(autoincrement())
+  name          String
+  beginDate     DateTime
+  endDate       DateTime
+  price         Int
+  maxMembers    Int?
+  tourTypeId    Int
+  tourAgentId   Int
+  tourType      TourType        @relation(fields: [tourTypeId], references: [id])
+  tourAgent     User            @relation(fields: [tourAgentId], references: [id])
+  Sale          Sale[]
+  TourFoodTypes TourFoodTypes[]
+  TourCities    TourCities[]
+}
+
+model TourFoodTypes {
+  tourId     Int
+  foodTypeId Int
+  tour       Tour     @relation(fields: [tourId], references: [id])
+  foodType   FoodType @relation(fields: [foodTypeId], references: [id])
+
+  @@id([tourId, foodTypeId])
+}
+
+model TourCities {
+  tourId Int
+  cityId Int
+  tour   Tour @relation(fields: [tourId], references: [id])
+  city   City @relation(fields: [cityId], references: [id])
+
+  @@id([tourId, cityId])
+}
+
+model Sale {
+  id         Int       @id @default(autoincrement())
+  tourId     Int
+  foodTypeId Int
+  discountId Int?
+  buyingDate DateTime  @default(now())
+  tour       Tour      @relation(fields: [tourId], references: [id])
+  foodType   FoodType  @relation(fields: [foodTypeId], references: [id])
+  discount   Discount? @relation(fields: [discountId], references: [id])
+  Refund     Refund?
+}
+
+model Refund {
+  id         Int      @id
+  reason     String?
+  employeeID Int
+  accepted   Boolean?
+  comment    Boolean?
+  employee   User     @relation(fields: [employeeID], references: [id])
+  sale       Sale     @relation(fields: [id], references: [id])
+}

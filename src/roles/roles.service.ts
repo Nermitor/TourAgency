@@ -5,17 +5,17 @@ import { Prisma } from '@prisma/client';
 @Injectable()
 export class RolesService {
   constructor(private readonly prisma: PrismaService) {}
-  create(createRoleDto: Prisma.RoleCreateInput) {
+  async create(createRoleDto: Prisma.RoleCreateInput) {
     return this.prisma.role.create({
       data: createRoleDto,
     });
   }
 
-  findAll() {
+  async findAll() {
     return this.prisma.role.findMany();
   }
 
-  findOne(id: number) {
+  async findOne(id: number) {
     return this.prisma.role.findUnique({
       where: {
         id,

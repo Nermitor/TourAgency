@@ -5,17 +5,17 @@ import { Prisma } from '@prisma/client';
 @Injectable()
 export class RefundsService {
   constructor(private prisma: PrismaService) {}
-  create(createRefundDto: Prisma.RefundCreateInput) {
+  async create(createRefundDto: Prisma.RefundCreateInput) {
     return this.prisma.refund.create({
       data: createRefundDto,
     });
   }
 
-  findAll() {
+  async findAll() {
     return this.prisma.refund.findMany();
   }
 
-  findOne(id: number) {
+  async findOne(id: number) {
     return this.prisma.refund.findUnique({
       where: {
         id,
@@ -23,14 +23,14 @@ export class RefundsService {
     });
   }
 
-  update(id: number, updateRefundDto: Prisma.RefundUpdateInput) {
+  async update(id: number, updateRefundDto: Prisma.RefundUpdateInput) {
     return this.prisma.refund.update({
       where: { id },
       data: updateRefundDto,
     });
   }
 
-  remove(id: number) {
+  async remove(id: number) {
     return this.prisma.refund.delete({
       where: { id },
     });

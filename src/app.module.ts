@@ -8,9 +8,14 @@ import { DiscountsModule } from './discounts/discounts.module';
 import { ToursModule } from './tours/tours.module';
 import { SalesModule } from './sales/sales.module';
 import { RefundsModule } from './refunds/refunds.module';
+import { AuthModule } from './auth/auth.module';
+import { ConfigModule } from '@nestjs/config';
+import { JwtAuthGuard } from './auth/jwt/jwt.guard';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     UsersModule,
     RolesModule,
     CountriesModule,
@@ -20,8 +25,14 @@ import { RefundsModule } from './refunds/refunds.module';
     ToursModule,
     SalesModule,
     RefundsModule,
+    AuthModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
+  ],
 })
 export class AppModule {}

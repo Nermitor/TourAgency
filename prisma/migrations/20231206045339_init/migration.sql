@@ -44,7 +44,7 @@ CREATE TABLE "Role" (
 CREATE TABLE "User" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "fullName" TEXT NOT NULL,
-    "hashedPassport" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
     "phoneNumber" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "passport" TEXT NOT NULL,
@@ -123,3 +123,12 @@ CREATE UNIQUE INDEX "FoodType_name_key" ON "FoodType"("name");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Discount_code_key" ON "Discount"("code");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "User_phoneNumber_key" ON "User"("phoneNumber");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "User_passport_key" ON "User"("passport");

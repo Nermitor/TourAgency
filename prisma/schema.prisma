@@ -55,16 +55,16 @@ model Role {
 }
 
 model User {
-  id             Int      @id @default(autoincrement())
-  fullName       String
-  hashedPassport String
-  phoneNumber   String
-  email          String
-  passport       String
-  roleID         Int
-  role           Role     @relation(fields: [roleID], references: [id])
-  Tour           Tour[]
-  Refund         Refund[]
+  id          Int      @id @default(autoincrement())
+  fullName    String
+  password    String
+  phoneNumber String  @unique
+  email       String   @unique
+  passport    String  @unique
+  roleID      Int
+  role        Role?    @relation(fields: [roleID], references: [id])
+  Tour        Tour[]
+  Refund      Refund[]
 }
 
 model Tour {
